@@ -1,0 +1,25 @@
+# Git flow: a main solo se llega con una PR desde dev de este mismo repositorio.
+# La regla de main exige que el job check-source-branch pase antes de fusionar.
+name: Git flow
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, edited, reopened, synchronize]
+
+permissions: {}
+
+jobs:
+  check-source-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comprobar que la PR viene de dev
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          if [ "$HEAD_REF" != 'dev' ] || [ "$HEAD_REPO" != "$REPO" ]; then
+            echo "::error::Las PR contra main solo pueden venir de dev (esta viene de '$HEAD_REPO:$HEAD_REF'). Cambia la rama base a dev."
+            exit 1
+          fi

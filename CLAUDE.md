@@ -18,6 +18,17 @@ Aplicación web de una sola página para gestionar tareas y priorizarlas con el 
 - Corregir: `npm run lint:fix` y `npm run format`.
 - Compilar: `npm run build` (comprueba tipos y genera `dist/`).
 
+## Flujo de trabajo con git
+
+Git flow con dos ramas permanentes en el repositorio público `dblanco-galfor/proyecto_curso`:
+
+- `dev`: rama de integración y rama por defecto del repositorio. Todo el trabajo entra aquí por PR.
+- `main`: versión estable. Solo recibe PR desde `dev`; lo comprueba `.github/workflows/git-flow.yml`.
+- Para cada issue, crea desde `dev` una rama `<tipo>/<número>-<descripción-breve>` (`feature`, `fix`, `chore` o `docs`; por ejemplo `feature/12-filtrar-tareas`). Abre la PR con base `dev` y escribe `Closes #<número>` en la descripción para que la issue se cierre al fusionar.
+- Las reglas del repositorio impiden a todos, también al administrador, hacer push directo, forzar el push o borrar `main` y `dev`.
+- Una PR solo se fusiona sin conflictos y con todos los hilos de conversación resueltos. No hace falta aprobación.
+- Para publicar una versión, abre una PR de `dev` a `main` y fusiónala con merge commit (es el único método permitido en `main`). Con squash o rebase, `main` y `dev` divergirían.
+
 ## Arquitectura
 
 ### Capas
